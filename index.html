@@ -19,33 +19,121 @@
       body {
         background-color: #141414;
       }
+      .card {
+        width: 185px;
+        -webkit-box-shadow: 5px 5px 15px 5px #000000;
+        box-shadow: 5px 5px 15px 5px #000000;
+      }
+      .card-img-top {
+        min-width: 100%;
+      }
+
+      .table td,
+      .table th {
+        border-top: none;
+        border-bottom: 0.5px solid gray;
+      }
+      .modal-content {
+        background-color: #141414;
+        color: rgb(205, 205, 205);
+        -webkit-box-shadow: 5px 5px 15px 5px #000000;
+        box-shadow: 5px 5px 15px 5px #000000;
+      }
+      .modal-body p {
+        padding-bottom: 4px;
+      }
     </style>
 
     <title>Hello, world!</title>
   </head>
   <body>
-    <div class="container row col-lg-11 bg-info m-auto mt-5">
-      <div class="input-group mb-3 pt-5">
-        <input
-          id="textInput"
-          type="text"
-          class="form-control"
-          placeholder="Enter title here"
-          aria-label="Recipient's username"
-          aria-describedby="button-addon2"
-        />
-        <div class="input-group-append">
-          <button
-            onclick="searchtitle()"
-            class="btn btn-outline-secondary"
-            type="button"
-            id="button-addon2"
-          >
-            Search
-          </button>
+    <div class="row col-lg-11 m-auto mt-5 p-n1">
+      <div class="row col-lg-12 col-xl-12 d-flex pt-3 justify-content-around">
+        <div class="input-group col-xl-8 pb-2 d-flex flex-wrap">
+          <input
+            id="textInput"
+            type="text"
+            class="form-control col-12"
+            placeholder="Enter artist name.. ex: EMINEM-.."
+            aria-label="Recipient's username"
+            aria-describedby="button-addon2"
+          />
+          <div class="input-group-append col-6">
+            <button
+              onclick="searchTitle()"
+              class="btn btn-outline-primary mx-2 col-5"
+              type="button"
+              id="button-addon2"
+            >
+              Search by artist
+            </button>
+            <button
+              onclick="displayTitle()"
+              id="displayTitle"
+              type="button"
+              class="btn btn-primary col-6"
+              data-toggle="modal"
+              data-target="#exampleModal"
+              data-whatever="@getbootstrap"
+            >
+              Search song by name
+            </button>
+          </div>
+        </div>
+        <div class="input-group col-xl-6 pb-2">
+          <div class="input-group-append col-12">
+            <!-- <input
+              
+              id="songInput"
+              type="text"
+              class="form-control col-8 mr-2"
+              placeholder="Enter title here"
+              aria-label="Recipient's username"
+              aria-describedby="button-addon2"
+            /> -->
+          </div>
         </div>
       </div>
-      <div class="container row"></div>
+
+      <div class="row col-lg-12 p-n1">
+        <div
+          class="containerLeft col-lg-12 d-flex flex-wrap justify-content-between"
+        ></div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Song List</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script
@@ -58,46 +146,17 @@
       integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
       crossorigin="anonymous"
     ></script>
+    <script src="index.js"></script>
     <script>
-      const options = {
-        method: "GET",
-        headers: {
-          "X-RapidAPI-Host": "deezerdevs-deezer.p.rapidapi.com",
-          "X-RapidAPI-Key":
-            "8680b311b0mshfa595d3b50bced8p16d6f0jsnfe6371eab6a7",
-        },
-      };
-      //   fetch(`https://striveschool-api.herokuapp.com/api/deezer/search?q=books`)
-      //     .then((data) => data.json())
-      //     .then((data) => console.log(data))
-      //     // .then((data) => {
-      //     //   for (let i = 0; i < data.length; i++) {
-      //     //     console.log(data[i].title);
-      //     //     // return data;
-      //     //   }
-      //     //})
-      //     .catch((err) => console.error(err));
-
-      function searchtitle() {
-        let textInput = document.querySelector("#textInput").value;
-        console.log(textInput);
-
-        fetch(
-          `https://deezerdevs-deezer.p.rapidapi.com/search?q=${textInput}`,
-          options
-        )
-          // fetch(
-          //   `https://striveschool-api.herokuapp.com/api/deezer/search=${textInput}`
-          // )
-          .then((data) => data.json())
-          .then((data) => console.log(data))
-          //   .then((data) => {
-          //     for (let i = 0; i < data.length; i++) {
-          //       console.log(data[i]);
-          //     }
-          //   })
-          .catch((err) => console.error(err));
-      }
+      $("#exampleModal").on("show.bs.modal", function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var recipient = button.data("whatever"); // Extract info from data-* attributes
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this);
+        // modal.find(".modal-title").text("New message to " + recipient);
+        modal.find(".modal-body input").val(recipient);
+      });
     </script>
   </body>
 </html>
